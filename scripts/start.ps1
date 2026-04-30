@@ -32,7 +32,20 @@ foreach ($Notebook in $IndexNotebooks) {
 
 Write-Host ""
 Write-Host "[start] Running notebook server preflight checks"
-& $VenvPython -c "import importlib, sys; required = ['jupyter_server', 'jupyter_events', 'yaml', 'overrides', 'nbclassic'];`nfor name in required:`n    try:`n        importlib.import_module(name)`n    except Exception as exc:`n        print(f""[start] Missing or broken Python package '{name}': {exc}"", file=sys.stderr)`n        print(""[start] Rebuild the environment with .\scripts\setup.ps1."", file=sys.stderr)`n        raise SystemExit(1)"
+& $VenvPython -c @"
+import importlib
+import sys
+
+required = ["jupyter_server", "jupyter_events", "yaml", "overrides", "nbclassic"]
+
+for name in required:
+    try:
+        importlib.import_module(name)
+    except Exception as exc:
+        print(f"[start] Missing or broken Python package '{name}': {exc}", file=sys.stderr)
+        print(r"[start] Rebuild the environment with .\scripts\setup.ps1.", file=sys.stderr)
+        raise SystemExit(1)
+"@
 if ($LASTEXITCODE -ne 0) {
     exit $LASTEXITCODE
 }
