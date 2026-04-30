@@ -72,4 +72,11 @@ Activate it with:
 
 Start the classic notebook UI from this repo with:
   ./scripts/start.sh
+
+Primary course entry notebooks:
+  notebooks/1_python3.ipynb
+  notebooks/4_packages.ipynb
+  notebooks/5_statics.ipynb
+  notebooks/6_machine_learning.ipynb
+  notebooks/7_neural_networks.ipynb
 EOF

@@ -52,5 +52,6 @@ for name in modules:
 PY
 
 log "Launching Jupyter Classic from ${NOTEBOOK_DIR}"
+log "Course entry notebooks: 1_python3.ipynb, 4_packages.ipynb, 5_statics.ipynb, 6_machine_learning.ipynb, 7_neural_networks.ipynb"
 log "First startup can take a moment. Interrupting with Ctrl-C during import or server startup may print a traceback even when the environment is healthy."
 exec "${START_SCRIPT}"

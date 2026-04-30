@@ -5,6 +5,11 @@ set "SCRIPT_DIR=%~dp0"
 set "SETUP_SCRIPT=%SCRIPT_DIR%scripts\setup.ps1"
 set "START_SCRIPT=%SCRIPT_DIR%scripts\start.ps1"
 set "VENV_PYTHON=%SCRIPT_DIR%.venv\Scripts\python.exe"
+set "POWERSHELL_EXE=%SystemRoot%\System32\WindowsPowerShell\v1.0\powershell.exe"
+
+if not exist "%POWERSHELL_EXE%" (
+  set "POWERSHELL_EXE=powershell"
+)
 
 if not exist "%SETUP_SCRIPT%" (
   echo.
@@ -20,7 +25,10 @@ if not exist "%START_SCRIPT%" (
 
 echo.
 echo [run] Installing and syncing the course environment
-powershell -NoProfile -ExecutionPolicy Bypass -File "%SETUP_SCRIPT%"
+"%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command ^
+  "Set-ExecutionPolicy -Scope Process Bypass -Force; ^
+   Get-Item '%SETUP_SCRIPT%','%START_SCRIPT%' | Unblock-File -ErrorAction SilentlyContinue; ^
+   & '%SETUP_SCRIPT%'"
 if errorlevel 1 exit /b %errorlevel%
 
 if not exist "%VENV_PYTHON%" (
@@ -36,5 +44,9 @@ if errorlevel 1 exit /b %errorlevel%
 
 echo.
 echo [run] Launching Jupyter Classic in the notebooks folder
-powershell -NoProfile -ExecutionPolicy Bypass -File "%START_SCRIPT%"
+echo [run] Course entry notebooks: 1_python3.ipynb, 4_packages.ipynb, 5_statics.ipynb, 6_machine_learning.ipynb, 7_neural_networks.ipynb
+"%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command ^
+  "Set-ExecutionPolicy -Scope Process Bypass -Force; ^
+   Get-Item '%SETUP_SCRIPT%','%START_SCRIPT%' | Unblock-File -ErrorAction SilentlyContinue; ^
+   & '%START_SCRIPT%'"
 exit /b %errorlevel%
