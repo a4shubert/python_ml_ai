@@ -6,7 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 VENV_DIR="${REPO_ROOT}/.venv"
 JUPYTER_BIN="${VENV_DIR}/bin/jupyter"
-NOTEBOOK_DIR="${REPO_ROOT}/notebook"
+NOTEBOOK_DIR="${REPO_ROOT}/notebooks"
 
 if [[ ! -x "${JUPYTER_BIN}" ]]; then
   printf '\n[start] Missing %s. Run ./scripts/setup.sh first.\n' "${JUPYTER_BIN}" >&2

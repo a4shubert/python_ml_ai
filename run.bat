@@ -35,6 +35,6 @@ echo [run] Verifying core notebook packages
 if errorlevel 1 exit /b %errorlevel%
 
 echo.
-echo [run] Launching Jupyter Classic in the notebook folder
+echo [run] Launching Jupyter Classic in the notebooks folder
 powershell -NoProfile -ExecutionPolicy Bypass -File "%START_SCRIPT%"
 exit /b %errorlevel%

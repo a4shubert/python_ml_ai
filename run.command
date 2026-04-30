@@ -50,5 +50,5 @@ for name in modules:
     print(f"{name} {version}")
 PY
 
-log "Launching Jupyter Classic in the notebook folder"
+log "Launching Jupyter Classic in the notebooks folder"
 exec "${START_SCRIPT}"

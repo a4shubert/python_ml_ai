@@ -140,5 +140,5 @@ __marimo__/
 .DS_Store
 
 # Course-generated notebook files
-notebook/stdlib_examples/
-notebook/generated_examples/
+notebooks/stdlib_examples/
+notebooks/generated_examples/
