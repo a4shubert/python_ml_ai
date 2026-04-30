@@ -4,13 +4,13 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Split-Path -Parent $ScriptDir
 $RequirementsFile = Join-Path $RepoRoot "requirements-ds-ml.txt"
-$PythonVersion = if ($env:PYTHON_VERSION) { $env:PYTHON_VERSION } else { "3.11" }
+$PythonVersion = if ($env:PYTHON_VERSION) { $env:PYTHON_VERSION } else { "3.12" }
 $UvInstallDir = Join-Path $RepoRoot ".tools\uv"
 $UvExe = Join-Path $UvInstallDir "uv.exe"
 $VenvDir = Join-Path $RepoRoot ".venv"
 $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
-$KernelName = "python-course-3.11"
-$KernelDisplayName = "Python Course 3.11"
+$KernelName = "python-course-3.12"
+$KernelDisplayName = "Python Course 3.12"
 
 function Write-SetupMessage {
     param([string]$Message)
@@ -56,5 +56,5 @@ Write-Host ""
 Write-Host "Activate it with:"
 Write-Host "  .\.venv\Scripts\Activate.ps1"
 Write-Host ""
-Write-Host "Start the classic notebook UI with:"
-Write-Host "  jupyter nbclassic"
+Write-Host "Start the classic notebook UI from this repo with:"
+Write-Host "  .\scripts\start.ps1"

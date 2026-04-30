@@ -6,6 +6,7 @@ SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 SETUP_SCRIPT="${SCRIPT_DIR}/scripts/setup.sh"
 START_SCRIPT="${SCRIPT_DIR}/scripts/start.sh"
 VENV_PYTHON="${SCRIPT_DIR}/.venv/bin/python"
+NOTEBOOK_DIR="${SCRIPT_DIR}/notebooks"
 
 log() {
   printf '\n[%s] %s\n' "run" "$1"
@@ -50,5 +51,6 @@ for name in modules:
     print(f"{name} {version}")
 PY
 
-log "Launching Jupyter Classic in the notebooks folder"
+log "Launching Jupyter Classic from ${NOTEBOOK_DIR}"
+log "First startup can take a moment. Interrupting with Ctrl-C during import or server startup may print a traceback even when the environment is healthy."
 exec "${START_SCRIPT}"
