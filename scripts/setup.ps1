@@ -4,13 +4,13 @@ $ErrorActionPreference = "Stop"
 $ScriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $RepoRoot = Split-Path -Parent $ScriptDir
 $RequirementsFile = Join-Path $RepoRoot "requirements-ds-ml.txt"
-$PythonVersion = if ($env:PYTHON_VERSION) { $env:PYTHON_VERSION } else { "3.12" }
+$PythonVersion = if ($env:PYTHON_VERSION) { $env:PYTHON_VERSION } else { "3.11" }
 $UvInstallDir = Join-Path $RepoRoot ".tools\uv"
 $UvExe = Join-Path $UvInstallDir "uv.exe"
 $VenvDir = Join-Path $RepoRoot ".venv"
 $VenvPython = Join-Path $VenvDir "Scripts\python.exe"
-$KernelName = "python-course-3.12"
-$KernelDisplayName = "Python Course 3.12"
+$KernelName = "python-course-3.11"
+$KernelDisplayName = "Python Course 3.11"
 
 function Write-SetupMessage {
     param([string]$Message)

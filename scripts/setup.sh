@@ -5,13 +5,13 @@ set -euo pipefail
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 REPO_ROOT="$(cd "${SCRIPT_DIR}/.." && pwd)"
 REQUIREMENTS_FILE="${REPO_ROOT}/requirements-ds-ml.txt"
-PYTHON_VERSION="${PYTHON_VERSION:-3.12}"
+PYTHON_VERSION="${PYTHON_VERSION:-3.11}"
 UV_INSTALL_DIR="${REPO_ROOT}/.tools/uv"
 UV_BIN="${UV_INSTALL_DIR}/uv"
 VENV_DIR="${REPO_ROOT}/.venv"
 VENV_PYTHON="${VENV_DIR}/bin/python"
-KERNEL_NAME="python-course-3.12"
-KERNEL_DISPLAY_NAME="Python Course 3.12"
+KERNEL_NAME="python-course-3.11"
+KERNEL_DISPLAY_NAME="Python Course 3.11"
 
 log() {
   printf '\n[%s] %s\n' "setup" "$1"
