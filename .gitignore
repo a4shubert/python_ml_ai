@@ -1,0 +1,7 @@
+.venv/
+.tools/
+.ipynb_checkpoints/
+__pycache__/
+*.pyc
+.DS_Store
+notebook/stdlib_examples/
