@@ -30,9 +30,8 @@ foreach ($Notebook in $IndexNotebooks) {
     }
 }
 
-Write-Host ""
-Write-Host "[start] Running notebook server preflight checks"
-& $VenvPython -c @"
+$PreflightScript = Join-Path ([System.IO.Path]::GetTempPath()) ("python_ml_ai_jupyter_preflight_" + [guid]::NewGuid().ToString("N") + ".py")
+$PreflightSource = @'
 import importlib
 import sys
 
@@ -45,9 +44,19 @@ for name in required:
         print(f"[start] Missing or broken Python package '{name}': {exc}", file=sys.stderr)
         print(r"[start] Rebuild the environment with .\scripts\setup.ps1.", file=sys.stderr)
         raise SystemExit(1)
-"@
-if ($LASTEXITCODE -ne 0) {
-    exit $LASTEXITCODE
+'@
+
+Write-Host ""
+Write-Host "[start] Running notebook server preflight checks"
+Set-Content -LiteralPath $PreflightScript -Value $PreflightSource -Encoding UTF8
+try {
+    & $VenvPython $PreflightScript
+    if ($LASTEXITCODE -ne 0) {
+        exit $LASTEXITCODE
+    }
+}
+finally {
+    Remove-Item -LiteralPath $PreflightScript -ErrorAction SilentlyContinue
 }
 
 Write-Host ""
