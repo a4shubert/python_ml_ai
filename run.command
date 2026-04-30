@@ -22,8 +22,10 @@ if [[ ! -x "${START_SCRIPT}" ]]; then
   exit 1
 fi
 
-log "Installing and syncing the course environment"
-"${SETUP_SCRIPT}"
+if [[ ! -x "${VENV_PYTHON}" ]]; then
+  log "No .venv found. Installing and syncing the course environment"
+  "${SETUP_SCRIPT}"
+fi
 
 if [[ ! -x "${VENV_PYTHON}" ]]; then
   printf '\n[%s] Missing %s after setup\n' "run" "${VENV_PYTHON}" >&2
@@ -31,6 +33,29 @@ if [[ ! -x "${VENV_PYTHON}" ]]; then
 fi
 
 log "Verifying core notebook packages"
+"${VENV_PYTHON}" - <<'PY' || {
+import importlib
+
+modules = [
+    "numpy",
+    "pandas",
+    "scipy",
+    "matplotlib",
+    "seaborn",
+    "pyarrow",
+    "notebook",
+    "nbclassic",
+]
+
+for name in modules:
+    module = importlib.import_module(name)
+    version = getattr(module, "__version__", "unknown")
+    print(f"{name} {version}")
+PY
+  log "Existing .venv is missing required notebook packages. Repairing the environment"
+  "${SETUP_SCRIPT}"
+}
+
 "${VENV_PYTHON}" - <<'PY'
 import importlib
 
@@ -50,7 +75,6 @@ for name in modules:
     version = getattr(module, "__version__", "unknown")
     print(f"{name} {version}")
 PY
-
 log "Launching Jupyter Classic from ${NOTEBOOK_DIR}"
 log "Course entry notebooks: 1_python3.ipynb, 4_packages.ipynb, 5_statics.ipynb, 6_machine_learning.ipynb, 7_neural_networks.ipynb"
 log "First startup can take a moment. Interrupting with Ctrl-C during import or server startup may print a traceback even when the environment is healthy."

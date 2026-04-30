@@ -23,6 +23,8 @@ echo [run] Missing %START_SCRIPT%
 exit /b 1
 
 :have_start
+if exist "%VENV_PYTHON%" goto have_venv_python
+
 echo.
 echo [run] Installing and syncing the course environment
 "%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy -Scope Process Bypass -Force; Get-Item -LiteralPath '%SETUP_SCRIPT%','%START_SCRIPT%' | Unblock-File -ErrorAction SilentlyContinue; & '%SETUP_SCRIPT%'"
@@ -37,10 +39,17 @@ exit /b 1
 echo.
 echo [run] Verifying core notebook packages
 "%VENV_PYTHON%" -c "import importlib; modules=['numpy','pandas','scipy','matplotlib','seaborn','pyarrow','notebook','nbclassic']; [print(f'{name} {getattr(importlib.import_module(name), \"__version__\", \"unknown\")}') for name in modules]"
-if errorlevel 1 exit /b %errorlevel%
+if errorlevel 1 goto repair_env
 
 echo.
 echo [run] Launching Jupyter Classic in the notebooks folder
 echo [run] Course entry notebooks: 1_python3.ipynb, 4_packages.ipynb, 5_statics.ipynb, 6_machine_learning.ipynb, 7_neural_networks.ipynb
 "%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy -Scope Process Bypass -Force; Get-Item -LiteralPath '%SETUP_SCRIPT%','%START_SCRIPT%' | Unblock-File -ErrorAction SilentlyContinue; & '%START_SCRIPT%'"
 exit /b %errorlevel%
+
+:repair_env
+echo.
+echo [run] Existing .venv is missing required notebook packages. Repairing the environment.
+"%POWERSHELL_EXE%" -NoLogo -NoProfile -NonInteractive -ExecutionPolicy Bypass -Command "Set-ExecutionPolicy -Scope Process Bypass -Force; Get-Item -LiteralPath '%SETUP_SCRIPT%','%START_SCRIPT%' | Unblock-File -ErrorAction SilentlyContinue; & '%SETUP_SCRIPT%'"
+if errorlevel 1 exit /b %errorlevel%
+goto have_venv_python

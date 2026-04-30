@@ -54,8 +54,12 @@ fi
 log "Ensuring Python ${PYTHON_VERSION} is available"
 "${UV_BIN}" python install "${PYTHON_VERSION}"
 
-log "Creating virtual environment at ${VENV_DIR}"
-"${UV_BIN}" venv --clear --python "${PYTHON_VERSION}" "${VENV_DIR}"
+if [[ -x "${VENV_PYTHON}" ]]; then
+  log "Reusing existing virtual environment at ${VENV_DIR}"
+else
+  log "Creating virtual environment at ${VENV_DIR}"
+  "${UV_BIN}" venv --python "${PYTHON_VERSION}" "${VENV_DIR}"
+fi
 
 log "Syncing packages from ${REQUIREMENTS_FILE}"
 "${UV_BIN}" pip sync --python "${VENV_PYTHON}" "${REQUIREMENTS_FILE}"

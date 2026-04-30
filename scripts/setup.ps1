@@ -41,8 +41,13 @@ if (-not (Test-Path -LiteralPath $UvExe)) {
 Write-SetupMessage "Ensuring Python $PythonVersion is available"
 & $UvExe python install $PythonVersion
 
-Write-SetupMessage "Creating virtual environment at $VenvDir"
-& $UvExe venv --clear --python $PythonVersion $VenvDir
+if (Test-Path -LiteralPath $VenvPython) {
+    Write-SetupMessage "Reusing existing virtual environment at $VenvDir"
+}
+else {
+    Write-SetupMessage "Creating virtual environment at $VenvDir"
+    & $UvExe venv --python $PythonVersion $VenvDir
+}
 
 Write-SetupMessage "Syncing packages from $RequirementsFile"
 & $UvExe pip sync --python $VenvPython $RequirementsFile
